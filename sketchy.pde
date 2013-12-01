@@ -47,14 +47,25 @@ void sample() {
   background(15);
   fill(250);
   noStroke();
-  rectMode(CENTER);
   
   pushMatrix();
   translate(width/2, height/2);
   
-  for(int i = 0; i<16; i++) {
-    fill((i*10)+50);
-    rect(sin(i+time*TAU)*70, (cos(i+time*TAU))*70, 50, 50);
+  for(int i = 0; i<3; i++) {
+    switch(i) {
+      case 0:
+        fill(255,0,0,127);
+        break;
+      case 1:
+        fill(0,255,0,127);
+        break;
+      case 2:
+        fill(0,0,255,127);
+        break;
+    }
+    ellipse(sin((time*TAU)+(TAU/3)*i)*70, cos((time*TAU)+(TAU/3)*i)*70, 130, 130);
   }
+  
   popMatrix();
+  fill(250);
 }
