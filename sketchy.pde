@@ -12,7 +12,7 @@ int[][] result;
 float time;
  
 void setup() {
-  size(500, 500);
+  size(500, 350);
   result = new int[width*height][3];
 }
  
@@ -44,26 +44,35 @@ void draw() {
 }
 
 void sample() {
-  background(30,15,45);
+  background(230,15,45);
   fill(250);
   noStroke();
   rectMode(CENTER);
   
   for(int i = 0; i<10; i++) {
     pushMatrix();
-    translate(-20, height+20);
+    translate(width/2, height);
     if(i%2 == 1) {
       rotate(time*TAU*i*0.25);
     } else {
       rotate(-time*TAU*i*0.25);
     }
-    scale(1.45);
+    scale(1.6);
     scale(1-(i/9.0));
     
-    fill(30, 15, 45+(i*22));
-    rect(0,0, width*1.05, height*1.05);
+    fill(230-(i*30), 15, 45+(i*22));
+    rect(0,0, 520, 520);
     
     popMatrix();
   }
   
+  int pixelsize = int(35+(sin(time*TAU)*25));
+  println(pixelsize);
+  
+  for(int x = 0; x<width; x+=pixelsize) {
+    for(int y = 0; y<height; y+=pixelsize) {
+      fill(get(x,y));
+      rect(x,y,pixelsize,pixelsize);
+    }
+  }
 }
