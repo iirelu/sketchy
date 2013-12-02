@@ -38,25 +38,30 @@ void draw() {
       (result[i][1]/samplesPerFrame) << 8 | (result[i][2]/samplesPerFrame);
   updatePixels();
  
-  //saveFrame("f##.png");
+  saveFrame("f##.png");
   if (frameCount==numFrames)
     exit();
 }
 
 void sample() {
-  background(15);
+  background(30,15,45);
   fill(250);
   noStroke();
   rectMode(CENTER);
   
   for(int i = 0; i<10; i++) {
     pushMatrix();
-    translate(width/2, height/2);
-    rotate(time*TAU*(i/5));
-    rotate(i%2 == 1 ? TAU/8 : 0);
+    translate(-20, height+20);
+    if(i%2 == 1) {
+      rotate(time*TAU*i*0.25);
+    } else {
+      rotate(-time*TAU*i*0.25);
+    }
+    scale(1.45);
+    scale(1-(i/9.0));
     
-    fill(30, 50+(i*20), 130);
-    rect(0,0, 520-(i*50), 520-(i*50));
+    fill(30, 15, 45+(i*22));
+    rect(0,0, width*1.05, height*1.05);
     
     popMatrix();
   }
