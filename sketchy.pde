@@ -52,9 +52,10 @@ void sample() {
   for(int i = 0; i<10; i++) {
     pushMatrix();
     translate(width/2, height/2);
-    rotate(sin(time*TAU)*TAU*0.004*i);
+    rotate(time*TAU*(i/5));
+    rotate(i%2 == 1 ? TAU/8 : 0);
     
-    fill(30+(i*20), 50, 130);
+    fill(30, 50+(i*20), 130);
     rect(0,0, 520-(i*50), 520-(i*50));
     
     popMatrix();
