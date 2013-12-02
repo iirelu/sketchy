@@ -5,14 +5,14 @@
  */
  
 int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
-int numFrames = 32;        
+int numFrames = 48;        
 float shutterAngle = 1.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
  
 float time;
  
 void setup() {
-  size(500, 350);
+  size(500, 500);
   result = new int[width*height][3];
 }
  
@@ -38,41 +38,44 @@ void draw() {
       (result[i][1]/samplesPerFrame) << 8 | (result[i][2]/samplesPerFrame);
   updatePixels();
  
-  saveFrame("f##.png");
+  //saveFrame("f##.png");
   if (frameCount==numFrames)
     exit();
 }
 
 void sample() {
-  background(230,15,45);
+  background(40, 120, 150);
   fill(250);
   noStroke();
   rectMode(CENTER);
   
   for(int i = 0; i<10; i++) {
     pushMatrix();
-    translate(width/2, height);
+    translate(width/2, 0);
     if(i%2 == 1) {
       rotate(time*TAU*i*0.25);
+      fill(10+(i*35), 190, 150);
     } else {
       rotate(-time*TAU*i*0.25);
+      fill(40, 120+(i*15), 150);
     }
     scale(1.6);
     scale(1-(i/9.0));
     
-    fill(230-(i*30), 15, 45+(i*22));
     rect(0,0, 520, 520);
     
     popMatrix();
   }
   
-  int pixelsize = int(35+(sin(time*TAU)*25));
-  println(pixelsize);
+  int pixelnum = 20;
+  int pixelsize = width/20;
   
-  for(int x = 0; x<width; x+=pixelsize) {
-    for(int y = 0; y<height; y+=pixelsize) {
-      fill(get(x,y));
-      rect(x,y,pixelsize,pixelsize);
+  for(int x = 0; x < pixelnum; x++) {
+    for(int y = 0; y < pixelnum; y++) {
+      float actualx = map(x, 0, pixelnum, 0, width) + pixelsize/2;
+      float actualy = map(y, 0, pixelnum, 0, height) + pixelsize/2;
+      fill(get(int(actualx), int(actualy)));
+      ellipse(actualx, actualy, pixelsize, pixelsize);
     }
   }
 }
