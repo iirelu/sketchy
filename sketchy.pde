@@ -9,18 +9,11 @@ int numFrames = 48;
 float shutterAngle = 1.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
-PFont font;
-PGraphics backgruh;
-
 float time;
  
 void setup() {
   size(500, 500);
   result = new int[width*height][3];
-  
-  font = loadFont("DejaVuSansMono-128.vlw");
-  backgruh = createGraphics(500, 500);
-  makeBackgruh();
 }
  
 void draw() {
@@ -45,54 +38,34 @@ void draw() {
       (result[i][1]/samplesPerFrame) << 8 | (result[i][2]/samplesPerFrame);
   updatePixels();
  
-  saveFrame("f##.png");
+  //saveFrame("f##.png");
   if (frameCount==numFrames)
     exit();
 }
 
 void sample() {
-  background(#8c71b4);
+  background(#121314);
+  fill(#e0e0e0);
   noStroke();
   rectMode(CENTER);
+  blendMode(DIFFERENCE);
   
-  //drawin the background
-  image(backgruh, 0, 0);
-  
-  //drawin fonts
-  
-  textFont(font);
-  textSize(128);
-  textAlign(CENTER, CENTER);
-  
-  pushMatrix();
-  translate(0, tan(time*TAU)*15);
-  
-  if(time < 0.25 || time > 0.75) {
-    fill(#10cfa4);
-    text("x", width/2+42, height/2);
-  } else {
-    fill(#f160ee);
-    text("s", width/2+42, height/2);
+  int shapesPerSide = 11;
+  for(int i = 0; i < sq(shapesPerSide); i++) {
+    if(i%3 == 1) {
+      continue;
+    }
+    
+    int x = i % shapesPerSide;
+    int y = (i-x)/shapesPerSide;
+    int xpos = round(map(x, 0, 9, 0, width));
+    int ypos = round(map(y, 0, 9, 0, height));
+    pushMatrix();
+    translate(xpos, ypos);
+    rotate(TAU/8);
+    scale( (sin(time*TAU)+1) * 40 * x/2 );
+    
+    rect(0, 0, 1, 1);
+    popMatrix();
   }
-  popMatrix();
-  
-  fill(#f0f0f0);
-  text("te t", width/2, height/2);
-}
-
-void makeBackgruh() {
-  backgruh.beginDraw();
-  backgruh.colorMode(HSB, 360, 100, 100);
-  backgruh.noStroke();
-  backgruh.noSmooth();
-  
-  for(int i = 10; i >= 0; i--) {
-    backgruh.fill(240-i*4, 40+i*1.5, 70-i*1.5);
-    backgruh.ellipse(250, 250, 300+i*45, 300+i*45);
-  }
-  backgruh.smooth();
-  backgruh.fill(#f0f0f0);
-  backgruh.rect(254, 0, 75, 500);
-  
-  backgruh.endDraw();
 }
