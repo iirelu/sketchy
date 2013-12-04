@@ -48,7 +48,6 @@ void sample() {
   fill(#e0e0e0);
   noStroke();
   rectMode(CENTER);
-  blendMode(DIFFERENCE);
   
   int shapesPerSide = 11;
   for(int i = 0; i < sq(shapesPerSide); i++) {
@@ -63,8 +62,10 @@ void sample() {
     pushMatrix();
     translate(xpos, ypos);
     rotate(TAU/8);
-    scale( (sin(time*TAU)+1) * 40 * x/2 );
+    scale( ((sin(time*TAU)+1) * 20) + (sin(y+time*TAU) * 20) );
+    //scale( (sin(y+time*TAU) * 50) );
     
+    fill(50+x*20, 10, 100);
     rect(0, 0, 1, 1);
     popMatrix();
   }
