@@ -4,9 +4,9 @@
  *  http://beesandbombs.tumblr.com
  */
  
-int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
-int numFrames = 48;        
-float shutterAngle = 1.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
+int samplesPerFrame = 16;  // more is better but slower. 32 is enough probably
+int numFrames = 60;        
+float shutterAngle = 5.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
 float time;
@@ -35,7 +35,7 @@ void draw() {
   loadPixels();
   for (int i=0; i<pixels.length; i++)
     pixels[i] = (result[i][0]/samplesPerFrame) << 16 | 
-      (result[i][1]/samplesPerFrame) << i % 167 | (result[i][2]/samplesPerFrame);
+      (result[i][1]/samplesPerFrame) << i % 125 | (result[i][2]/samplesPerFrame);
   updatePixels();
  
   //saveFrame("f##.png");
@@ -44,16 +44,16 @@ void draw() {
 }
 
 void sample() {
-  background(#335ce0);
-  fill(#e0e0d0);
+  background(40, 20, 90);
+  fill(50, 20+sin(time*PI)*220, 200);
   noStroke();
   rectMode(CENTER);
   
   pushMatrix();
   translate(width/2, height/2);
-  rotate(time*TAU/4);
+  rotate(time*PI);
   
-  rect(0, 0, 290, 290);
+  rect(0, 0, 290, 130);
   popMatrix();
   
   /*loadPixels();
