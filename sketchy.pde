@@ -26,8 +26,8 @@ void draw() {
     sample();
     loadPixels();
     for (int i=0; i<pixels.length; i++) {
-      result[i][0] += pixels[i] >> 16 & 0xff;
-      result[i][1] += pixels[i] >> 8 & 0xff;
+      result[i][0] += pixels[i] >> 8 & 0xff;
+      result[i][1] += pixels[i] >> 16 & 0xff;
       result[i][2] += pixels[i] & 0xff;
     }
   }
@@ -35,7 +35,7 @@ void draw() {
   loadPixels();
   for (int i=0; i<pixels.length; i++)
     pixels[i] = (result[i][0]/samplesPerFrame) << 16 | 
-      (result[i][1]/samplesPerFrame) << 8 | (result[i][2]/samplesPerFrame);
+      (result[i][1]/samplesPerFrame) << i % 167 | (result[i][2]/samplesPerFrame);
   updatePixels();
  
   //saveFrame("f##.png");
@@ -44,29 +44,23 @@ void draw() {
 }
 
 void sample() {
-  background(#121314);
-  fill(#e0e0e0);
+  background(#335ce0);
+  fill(#e0e0d0);
   noStroke();
   rectMode(CENTER);
   
-  int shapesPerSide = 11;
-  for(int i = 0; i < sq(shapesPerSide); i++) {
-    if(i%3 == 1) {
-      continue;
-    }
-    
-    int x = i % shapesPerSide;
-    int y = (i-x)/shapesPerSide;
-    int xpos = round(map(x, 0, 9, 0, width));
-    int ypos = round(map(y, 0, 9, 0, height));
-    pushMatrix();
-    translate(xpos, ypos);
-    rotate(TAU/8);
-    scale( ((sin(time*TAU)+1) * 20) + (sin(y+time*TAU) * 20) );
-    //scale( (sin(y+time*TAU) * 50) );
-    
-    fill(50+x*20, 10, 100);
-    rect(0, 0, 1, 1);
-    popMatrix();
+  pushMatrix();
+  translate(width/2, height/2);
+  rotate(time*TAU/4);
+  
+  rect(0, 0, 290, 290);
+  popMatrix();
+  
+  /*loadPixels();
+  color holder = #0000FF;
+  
+  for(int i=0; i<pixels.length; i++) {
+    pixels[i] = color(pixels[i] << 16, pixels[i] << 8, pixels[i]);
   }
+  updatePixels();*/
 }
