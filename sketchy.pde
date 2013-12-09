@@ -4,9 +4,9 @@
  *  http://beesandbombs.tumblr.com
  */
  
-int samplesPerFrame = 16;  // more is better but slower. 32 is enough probably
+int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
 int numFrames = 60;        
-float shutterAngle = 5.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
+float shutterAngle = 1.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
 float time;
@@ -26,8 +26,8 @@ void draw() {
     sample();
     loadPixels();
     for (int i=0; i<pixels.length; i++) {
-      result[i][0] += pixels[i] >> 8 & 0xff;
-      result[i][1] += pixels[i] >> 16 & 0xff;
+      result[i][0] += pixels[i] >> 16 & 0xff;
+      result[i][1] += pixels[i] >> 8 & 0xff;
       result[i][2] += pixels[i] & 0xff;
     }
   }
@@ -35,17 +35,17 @@ void draw() {
   loadPixels();
   for (int i=0; i<pixels.length; i++)
     pixels[i] = (result[i][0]/samplesPerFrame) << 16 | 
-      (result[i][1]/samplesPerFrame) << i % 125 | (result[i][2]/samplesPerFrame);
+      (result[i][1]/samplesPerFrame) << 8 | (result[i][2]/samplesPerFrame);
   updatePixels();
  
-  //saveFrame("f##.png");
+  saveFrame("f##.png");
   if (frameCount==numFrames)
     exit();
 }
 
 void sample() {
-  background(40, 20, 90);
-  fill(50, 20+sin(time*PI)*220, 200);
+  background(15);
+  fill(250);
   noStroke();
   rectMode(CENTER);
   
@@ -53,14 +53,8 @@ void sample() {
   translate(width/2, height/2);
   rotate(time*PI);
   
-  rect(0, 0, 290, 130);
+  background(int(time*2) % 2 == 0 ? #ef4f9a : #7bbe48);
+  
+  rect(0, 0, 500, 500);
   popMatrix();
-  
-  /*loadPixels();
-  color holder = #0000FF;
-  
-  for(int i=0; i<pixels.length; i++) {
-    pixels[i] = color(pixels[i] << 16, pixels[i] << 8, pixels[i]);
-  }
-  updatePixels();*/
 }
