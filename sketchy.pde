@@ -3,24 +3,25 @@
  *  by dave
  *  http://beesandbombs.tumblr.com
  */
- 
+
 int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
-int numFrames = 60;        
+int numFrames = 48;        
 float shutterAngle = 1.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
 float time;
- 
+
 void setup() {
-  size(500, 500);
+  size(500, 500, P2D);
+  smooth(16);
   result = new int[width*height][3];
 }
- 
+
 void draw() {
   for (int i=0; i<width*height; i++)
     for (int a=0; a<3; a++)
       result[i][a] = 0;
- 
+
   for (int sa=0; sa<samplesPerFrame; sa++) {
     time = map(frameCount + sa*shutterAngle/samplesPerFrame, 0, numFrames, 0, 1);
     sample();
@@ -31,13 +32,14 @@ void draw() {
       result[i][2] += pixels[i] & 0xff;
     }
   }
- 
+
   loadPixels();
   for (int i=0; i<pixels.length; i++)
     pixels[i] = (result[i][0]/samplesPerFrame) << 16 | 
-      (result[i][1]/samplesPerFrame) << 8 | (result[i][2]/samplesPerFrame);
+      (result[i][1]/samplesPerFrame) << 8 | (result[i][2]/samplesPerFrame) |
+      255 << 24; // makey worky with P2D
   updatePixels();
- 
+
   saveFrame("f##.png");
   if (frameCount==numFrames)
     exit();
@@ -48,13 +50,15 @@ void sample() {
   fill(250);
   noStroke();
   rectMode(CENTER);
-  
-  pushMatrix();
-  translate(width/2, height/2);
-  rotate(time*PI);
-  
-  background(int(time*2) % 2 == 0 ? #ef4f9a : #7bbe48);
-  
-  rect(0, 0, 500, 500);
-  popMatrix();
+  blendMode(EXCLUSION);
+
+  for(int i = 0; i<10; i++) {
+    pushMatrix();
+    translate(235+i*3, 225-i*-5);
+    rotate(time*TAU/4);
+    
+    rect(0,0,150,150);
+    popMatrix();
+  }
 }
+
