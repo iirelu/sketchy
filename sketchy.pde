@@ -40,7 +40,7 @@ void draw() {
       255 << 24; // makey worky with P2D
   updatePixels();
 
-  saveFrame("f##.png");
+  //saveFrame("f##.png");
   if (frameCount==numFrames)
     exit();
 }
@@ -52,12 +52,17 @@ void sample() {
   rectMode(CENTER);
   blendMode(EXCLUSION);
 
-  for(int i = 0; i<10; i++) {
+  int swidth = 30;
+  int sheight = 30;
+
+  for (int i=0; i<swidth*sheight; i++) {
     pushMatrix();
-    translate(235+i*3, 225-i*-5);
-    rotate(time*TAU/4);
+    translate(map(i/swidth, 0, swidth, -250, width+250), map(i%sheight, 0, sheight, -250, height+250));
+    rotate(TAU/8);
+    scale(sin(time*TAU + i%sheight));
     
-    rect(0,0,150,150);
+    fill(sin(time*TAU + i%sheight)*255);
+    rect(0, 0, 40, 40);
     popMatrix();
   }
 }
