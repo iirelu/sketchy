@@ -12,7 +12,7 @@ int[][] result;
 float time;
 
 void setup() {
-  size(500, 500, P2D);
+  size(250, 250, P2D);
   smooth(16);
   result = new int[width*height][3];
 }
@@ -40,7 +40,7 @@ void draw() {
       255 << 24; // makey worky with P2D
   updatePixels();
 
-  //saveFrame("f##.png");
+  saveFrame("f##.png");
   if (frameCount==numFrames)
     exit();
 }
@@ -52,16 +52,22 @@ void sample() {
   rectMode(CENTER);
   blendMode(EXCLUSION);
 
-  int swidth = 30;
-  int sheight = 30;
+  int swidth = 35;
+  int sheight = 35;
+  PVector centre = new PVector(width/2, height/2);
 
   for (int i=0; i<swidth*sheight; i++) {
-    pushMatrix();
-    translate(map(i/swidth, 0, swidth, -250, width+250), map(i%sheight, 0, sheight, -250, height+250));
-    rotate(TAU/8);
-    scale(sin(time*TAU + i%sheight));
+    float curwidth = map(i/swidth, 0, swidth, -250, width+250);
+    float curheight = map(i%sheight, 0, sheight, -250, height+250);
+    float dist = new PVector(curwidth, curheight).dist(centre);
+    float colmul = sin(time*TAU + dist);
     
-    fill(sin(time*TAU + i%sheight)*255);
+    pushMatrix();
+    translate(curwidth, curheight);
+    rotate(TAU/8);
+    scale(colmul);
+    
+    fill(100+colmul*100);
     rect(0, 0, 40, 40);
     popMatrix();
   }
