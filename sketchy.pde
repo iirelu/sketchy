@@ -5,7 +5,7 @@
  */
 
 int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
-int numFrames = 48;        
+int numFrames = 90;        
 float shutterAngle = 1.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
@@ -48,32 +48,31 @@ void draw() {
 void sample() {
   background(15);
   fill(250);
-  noStroke();
+  stroke(250);
+  //noStroke();
   rectMode(CENTER);
-  blendMode(EXCLUSION);
-
-  int swidth = 50;
-  int sheight = 50;
-  PVector centre = new PVector(width/2, height/2);
-
-  for (int i=0; i<swidth*sheight; i++) {
-    float curwidth = map(i/swidth, 0, swidth, -250, width+250);
-    float curheight = map(i%sheight, 0, sheight, -250, height+250);
-    float dist = new PVector(curwidth, curheight).dist(centre);
-    float colmul = sin(time*TAU + dist/30);
-    
-    if(dist > 150) {
-      continue;
-    }
-    
-    pushMatrix();
-    translate(curwidth, curheight);
-    rotate(TAU/8+i/1.1);
-    scale(colmul);
-    
-    fill(colmul*200);
-    rect(0, 0, i % 40, i % 40);
-    popMatrix();
+  
+  //sine
+  PShape sine = createShape();
+  sine.beginShape(TRIANGLE_STRIP);
+  for(int i = 0; i<width; i++) {
+    sine.vertex(map(i, 0, width, 0, width+1), 250+sin(map((i/10.0)+time*50, 0, 50, 0, TAU))*50);
   }
+  sine.endShape();
+  shape(sine);
+  
+  float ypos = sin(map(25.0+time*50, 0, 50, 0, TAU));
+  
+  //lines
+  stroke(40, 30, 190);
+  noFill();
+  line(width/2, 0, width/2, height);
+  rect(width/2, 250+ypos*50, 50, 1);
+  
+  //text
+  noStroke();
+  fill(20, 50, 190);
+  textSize(50);
+  text(nf(ypos*-1, 1, 4), width/2 + 30, 19+250+ypos*50); 
 }
 
