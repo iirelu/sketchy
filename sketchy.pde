@@ -5,7 +5,7 @@
  */
 
 int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
-int numFrames = 90;        
+int numFrames = 64;        
 float shutterAngle = 1.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
@@ -48,31 +48,20 @@ void draw() {
 void sample() {
   background(15);
   fill(250);
-  stroke(250);
-  //noStroke();
-  rectMode(CENTER);
-  
-  //sine
-  PShape sine = createShape();
-  sine.beginShape(TRIANGLE_STRIP);
-  for(int i = 0; i<width; i++) {
-    sine.vertex(map(i, 0, width, 0, width+1), 250+sin(map((i/10.0)+time*50, 0, 50, 0, TAU))*50);
-  }
-  sine.endShape();
-  shape(sine);
-  
-  float ypos = sin(map(25.0+time*50, 0, 50, 0, TAU));
-  
-  //lines
-  stroke(40, 30, 190);
-  noFill();
-  line(width/2, 0, width/2, height);
-  rect(width/2, 250+ypos*50, 50, 1);
-  
-  //text
   noStroke();
-  fill(20, 50, 190);
-  textSize(50);
-  text(nf(ypos*-1, 1, 4), width/2 + 30, 19+250+ypos*50); 
+  rectMode(CENTER);
+  blendMode(EXCLUSION);
+
+  for (int i=0; i<3; i++) {
+    float x = sin((i*TAU/3)+time*TAU)*(sin(time*TAU)*20);
+    float y = cos((i*TAU/3)+time*TAU)*(sin(time*TAU)*20);
+
+    pushMatrix();
+    translate(x+width/2, y+width/2);
+    
+    fill(#0000FF << i*8);
+    ellipse(0, 0, 150+sin(time*TAU)*40, 150+sin(time*TAU)*40);
+    popMatrix();
+  }
 }
 
