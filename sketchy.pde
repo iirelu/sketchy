@@ -4,8 +4,8 @@
  *  http://beesandbombs.tumblr.com
  */
 
-int samplesPerFrame = 32*2;  // more is better but slower. 32 is enough probably
-int numFrames = 48*2;        
+int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
+int numFrames = 48;        
 float shutterAngle = 1.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
@@ -52,18 +52,17 @@ void sample() {
   rectMode(CENTER);
   blendMode(EXCLUSION);
 
-  for (int i=0; i<18; i++) {
-    float phase = i*time*TAU;
-    float x = sin(phase);
-    float y = cos(phase);
-    x *= i/3 * 50;
-    y *= i/3 * 50;
-
-    pushMatrix();
-    translate(x+width/2, y+width/2);
+  for(int i = 0; i<sq(32); i++) {
+    float x = map(i/32, 0, 31, 0, width);
+    float y = map(i%32, 0, 31, 0, height);
+    float dist = sqrt(sq(x-width/2) + sq(y-height/2));
     
-    fill(#0000FF << (i%3)*8);
-    ellipse(0, 0, 150, 150);
+    pushMatrix();
+    translate(x, y);
+    
+    colorMode(HSB, 100);
+    fill(map(atan2(x-width/2, y-width/2), -PI, PI, 0, 100), dist, 50);
+    ellipse(0, 0, sin(dist/100+time*TAU)*30, sin(dist/100+time*TAU)*30);
     popMatrix();
   }
 }
