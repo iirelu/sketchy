@@ -5,14 +5,14 @@
  */
 
 int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
-int numFrames = 30;        
+int numFrames = 48;        
 float shutterAngle = 1.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
 float time;
 
 void setup() {
-  size(350, 350, P2D);
+  size(500, 500, P2D);
   smooth(16);
   result = new int[width*height][3];
 }
@@ -51,16 +51,19 @@ void sample() {
   noStroke();
   rectMode(CENTER);
   blendMode(EXCLUSION);
+  
+  int scale = 64;
 
-  for(int i = 0; i<sq(32); i++) {
-    float x = map(i/32, 0, 31, 0, width);
-    float y = map(i%32, 0, 31, 0, height);
+  for(int i = 0; i<sq(scale); i++) {
+    float x = map(i/scale, 0, scale-1, 0, width);
+    float y = map(i%scale, 0, scale-1, 0, height);
+    
     float dist = sqrt(sq(x-width/2) + sq(y-height/2));
     float angle = atan2(x-width/2, y-width/2);
-    float size = sin(dist/100+time*PI+angle*8193)*30;
+    float size = sin(dist/100+time*PI+angle*0.5)*30;
     
-    if(dist > 70) {
-      size = max(abs(size)-(dist-70)/4, 0);
+    if(dist > 150) {
+      size = max(abs(size)-(dist-150)/9, 0);
     }
     
     pushMatrix();
