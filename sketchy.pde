@@ -5,14 +5,14 @@
  */
 
 int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
-int numFrames = 48;        
+int numFrames = 60;        
 float shutterAngle = 1.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
 float time;
 
 void setup() {
-  size(500, 500, P2D);
+  size(500, 500, P3D);
   smooth(16);
   result = new int[width*height][3];
 }
@@ -46,33 +46,26 @@ void draw() {
 }
 
 void sample() {
-  background(10);
+  background(15);
   fill(250);
   noStroke();
   rectMode(CENTER);
-  blendMode(EXCLUSION);
   
-  int scale = 64;
-
-  for(int i = 0; i<sq(scale); i++) {
-    float x = map(i/scale, 0, scale-1, 0, width);
-    float y = map(i%scale, 0, scale-1, 0, height);
-    
-    float dist = sqrt(sq(x-width/2) + sq(y-height/2));
-    float angle = atan2(x-width/2, y-width/2);
-    float size = sin(dist/100+time*PI+angle*0.5)*30;
-    
-    if(dist > 150) {
-      size = max(abs(size)-(dist-150)/9, 0);
-    }
-    
-    pushMatrix();
-    translate(x, y);
-    
-    colorMode(HSB, 100);
-    fill(map(angle, -PI, PI, 0, 100), 100, 50);
-    ellipse(0, 0, size, size);
-    popMatrix();
-  }
+  pushMatrix();
+  translate(width/2, height/2);
+  rotateX(TAU/9);
+  rotateY(TAU/8);
+  rotateZ(time*PI);
+  
+  box(100, 100, 100);
+  fill(#cc0000);
+  box(300, 3, 3);
+  fill(#00cc00);
+  box(3, 300, 3);
+  
+  rotateZ(-time*PI);
+  fill(#0000cc);
+  box(3, 3, 5000);
+  popMatrix();
 }
 
