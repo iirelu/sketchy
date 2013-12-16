@@ -56,13 +56,15 @@ void sample() {
     float x = map(i/32, 0, 31, 0, width);
     float y = map(i%32, 0, 31, 0, height);
     float dist = sqrt(sq(x-width/2) + sq(y-height/2));
+    float angle = atan2(x-width/2, y-width/2);
+    float size = sin(dist/100+time*PI+angle)*30;
     
     pushMatrix();
     translate(x, y);
     
     colorMode(HSB, 100);
-    fill(map(atan2(x-width/2, y-width/2), -PI, PI, 0, 100), dist, 50);
-    ellipse(0, 0, sin(dist/100+time*TAU)*30, sin(dist/100+time*TAU)*30);
+    fill(map(angle, -PI, PI, 0, 100), 100, 50);
+    ellipse(0, 0, size, size);
     popMatrix();
   }
 }
