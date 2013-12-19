@@ -5,8 +5,8 @@
  */
 
 int samplesPerFrame = 32*8;  // more is better but slower. 32 is enough probably
-int numFrames = 48;        
-float shutterAngle = 1.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
+int numFrames = 49;        
+float shutterAngle = 5.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
 float time;
@@ -40,7 +40,7 @@ void draw() {
       255 << 24; // makey worky with P2D
   updatePixels();
 
-  //saveFrame("f##.png");
+  saveFrame("f##.png");
   if (frameCount==numFrames)
     exit();
 }
@@ -52,7 +52,11 @@ void sample() {
   rectMode(CENTER);
 
   for (int i = 0; i<height; i++) {
-    ellipse(tan(i+time*TAU)+250 % 500, i, 20, 20);
+    pushMatrix();
+    rotate(i/100.0*PI);
+    
+    ellipse(tan(i+time*PI)+250 % 500, i, 20, 20);
+    popMatrix();
   }
 }
 
