@@ -5,7 +5,7 @@
  */
 
 int samplesPerFrame = 32*8;  // more is better but slower. 32 is enough probably
-int numFrames = 49;        
+int numFrames = 48;        
 float shutterAngle = 5.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
@@ -51,11 +51,13 @@ void sample() {
   noStroke();
   rectMode(CENTER);
 
-  for (int i = 0; i<height; i++) {
+  for (int i = 0; i<1000; i++) {
     pushMatrix();
-    rotate(i/100.0*PI);
+    translate(width/2, height/2);
+    scale(0.5);
+    rotate(i/50.0*PI);
     
-    ellipse(tan(i+time*PI)+250 % 500, i, 20, 20);
+    ellipse(tan(i+time*PI)+0.01*(sq(i+0.0)) % 500, i, 20, 20);
     popMatrix();
   }
 }
