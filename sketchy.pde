@@ -40,7 +40,7 @@ void draw() {
       255 << 24; // makey worky with P2D
   updatePixels();
 
-  saveFrame("f##.png");
+  //saveFrame("f##.png");
   if (frameCount==numFrames)
     exit();
 }
@@ -50,23 +50,22 @@ void sample() {
   fill(250);
   noStroke();
   rectMode(CENTER);
-  /*lights();
-  directionalLight(238, 50, 14, 0, -1, -1);
-  directionalLight(164, 138, 226, 0, 1, 1);*/
+  lights();
+  pointLight(238, 50, 14, 0, 0, 0);
+  directionalLight(164, 138, 226, 0, 1, 0);
   
-  int num = 15;
+  int num = 30;
 
   for(int i=0; i<num; i++) {
-    float angle = map(i, 0, num, 0, TAU);
     
     pushMatrix();
     translate(width/2, height/2);
-    rotate(map(i, 0, num, 0, TAU)/*+time/num*TAU*/);
-    rotateX(map(i, 0, num, 0, TAU)+time*TAU);
+    rotate(map(i, 0, num, 0, TAU));
     
     translate(0, -150);
+    rotateX(map(i, 0, num, 0, TAU)+time*PI);
     
-    box(50, 40, 1);
+    box(20, 40, 1);
     popMatrix();
   }
 }
