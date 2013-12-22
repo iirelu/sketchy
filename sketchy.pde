@@ -4,15 +4,15 @@
  *  http://beesandbombs.tumblr.com
  */
 
-int samplesPerFrame = 32*8;  // more is better but slower. 32 is enough probably
-int numFrames = 48*2;        
-float shutterAngle = 5.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
+int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
+int numFrames = 60;        
+float shutterAngle = 2.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
 float time;
 
 void setup() {
-  size(500, 500, P2D);
+  size(500, 500, P3D);
   smooth(16);
   result = new int[width*height][3];
 }
@@ -50,14 +50,23 @@ void sample() {
   fill(250);
   noStroke();
   rectMode(CENTER);
+  /*lights();
+  directionalLight(238, 50, 14, 0, -1, -1);
+  directionalLight(164, 138, 226, 0, 1, 1);*/
+  
+  int num = 15;
 
-  for (int i = 0; i<1000; i++) {
+  for(int i=0; i<num; i++) {
+    float angle = map(i, 0, num, 0, TAU);
+    
     pushMatrix();
     translate(width/2, height/2);
-    scale(0.5);
-    rotate(i/50.0*PI);
+    rotate(map(i, 0, num, 0, TAU)/*+time/num*TAU*/);
+    rotateX(map(i, 0, num, 0, TAU)+time*TAU);
     
-    ellipse(tan(i%3+time*PI)*50, (i/50000.0)*0.1*sq(i), 20, 20);
+    translate(0, -150);
+    
+    box(50, 40, 1);
     popMatrix();
   }
 }
