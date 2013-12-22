@@ -57,7 +57,7 @@ void sample() {
     scale(0.5);
     rotate(i/50.0*PI);
     
-    ellipse(tan(i+time*PI)+0.01*(sq(i+0.0)) % 500, i, 20, 20);
+    ellipse(tan(i+time*PI)*50, i+0.04*sq(i), 20, 20);
     popMatrix();
   }
 }
