@@ -56,10 +56,9 @@ int[] sample(float time) {
     float dist = sqrt(sq(x-width/2) + sq(y-height/2)); // pythagoras says hi bitches
     float angle = atan2(x-height/2, y-width/2);
     
-    int grey = int(1+sin(dist*angle+time*TAU))*127;
-    int red = grey;
-    int green = grey/3;
-    int blue = grey/2;
+    int red = 127;
+    int green = int(1+sin(dist-angle+time*TAU))*127;
+    int blue = int(1+sin(dist+angle+time*TAU))*127;
     
     pixs[i] = red << 16 | green << 8 | blue;
   }
