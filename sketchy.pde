@@ -6,7 +6,7 @@
  */
 
 int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
-int numFrames = 16;        
+int numFrames = 32;        
 float shutterAngle = 5.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
@@ -53,12 +53,12 @@ int[] sample(float time) {
   for(int i=0; i<pixs.length; i++) {
     int x = i/width;
     int y = i%height;
-    float dist = sqrt(sq(x-width/2) + sq(y-height/2)); // pythagoras says hi bitches
+    float dist = sqrt(sq(x-width/2) + sq(y-height/2))*0.2; // pythagoras says hi bitches
     float angle = atan2(x-height/2, y-width/2);
     
-    int red = 127;
-    int green = int(1+sin(dist-angle+time*TAU))*127;
-    int blue = int(1+sin(dist+angle+time*TAU))*127;
+    int red = int(1+sin(dist-angle-time*TAU))*127;
+    int green = int(1+sin(dist-angle+time*TAU*2))*127;
+    int blue = int(1+sin(dist+angle+time*TAU*3))*127;
     
     pixs[i] = red << 16 | green << 8 | blue;
   }
