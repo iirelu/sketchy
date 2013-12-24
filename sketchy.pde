@@ -51,14 +51,26 @@ int[] sample(float time) {
   int[] pixs = new int[width*height];
   
   for(int i=0; i<pixs.length; i++) {
+    int red, green, blue;
     int x = i/width;
     int y = i%height;
-    float dist = sqrt(sq(x-width/2) + sq(y-height/2))*0.2; // pythagoras says hi bitches
+    float dist = sqrt(sq(x-width/2) + sq(y-height/2)); // pythagoras says hi bitches
+    dist = 0.1*sq(dist);
     float angle = atan2(x-height/2, y-width/2);
     
-    int red = int(1+sin(dist-angle-time*TAU))*127;
-    int green = int(1+sin(dist-angle+time*TAU*2))*127;
-    int blue = int(1+sin(dist+angle+time*TAU*3))*127;
+    if(dist%50 < 25) {
+      angle *= -5;
+      dist *= -1;
+      
+      red = int(1+sin(dist-angle-time*TAU))*127;
+      green = int(1+sin(dist-angle+time*TAU*2))*127;
+      blue = int(1+sin(dist+angle+time*TAU*3))*127;
+    } else {
+      red = int(1+sin(1+dist-angle-time*TAU*5))*127;
+      green = int(1+sin(1+dist-angle+time*TAU*4))*127;
+      blue = int(1+sin(1+dist+angle+time*TAU*3))*127;
+    }
+    
     
     pixs[i] = red << 16 | green << 8 | blue;
   }
