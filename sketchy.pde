@@ -5,31 +5,30 @@
  */
 
 int samplesPerFrame = 32;  // more is better but slower. 32 is enough probably
-int numFrames = 60;        
-float shutterAngle = 2.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
+int numFrames = 16;        
+float shutterAngle = 5.0;  // this should be between 0 and 1 realistically. exaggerated for effect here
 int[][] result;
 
 float time;
 
 void setup() {
-  size(500, 500, P3D);
+  size(500, 500, P2D);
   smooth(16);
   result = new int[width*height][3];
 }
 
 void draw() {
-  for (int i=0; i<width*height; i++)
-    for (int a=0; a<3; a++)
-      result[i][a] = 0;
+  for (int i=0; i<width*height*3; i++) {
+    result[i/3][i%3] = 0;
+  }
 
   for (int sa=0; sa<samplesPerFrame; sa++) {
     time = map(frameCount + sa*shutterAngle/samplesPerFrame, 0, numFrames, 0, 1);
-    sample();
-    loadPixels();
-    for (int i=0; i<pixels.length; i++) {
-      result[i][0] += pixels[i] >> 16 & 0xff;
-      result[i][1] += pixels[i] >> 8 & 0xff;
-      result[i][2] += pixels[i] & 0xff;
+    int[] pixs = sample(time);
+    for (int i=0; i<pixs.length; i++) {
+      result[i][0] += pixs[i] >> 16 & 0xff;
+      result[i][1] += pixs[i] >> 8 & 0xff;
+      result[i][2] += pixs[i] & 0xff;
     }
   }
 
@@ -45,28 +44,15 @@ void draw() {
     exit();
 }
 
-void sample() {
-  background(15);
-  fill(250);
-  noStroke();
-  rectMode(CENTER);
-  lights();
-  pointLight(238, 50, 14, 0, 0, 0);
-  directionalLight(164, 138, 226, 0, 1, 0);
+int[] sample(float time) {
+  int[] pixs = new int[width*height];
   
-  int num = 30;
-
-  for(int i=0; i<num; i++) {
-    
-    pushMatrix();
-    translate(width/2, height/2);
-    rotate(map(i, 0, num, 0, TAU));
-    
-    translate(0, -150);
-    rotateX(map(i, 0, num, 0, TAU)+time*PI);
-    
-    box(20, 40, 1);
-    popMatrix();
+  for(int i=0; i<pixs.length; i++) {
+    pixs[i] = ((i+int(time*255))%255) << 16 // red
+      | 127 << 8 | // green
+      127; // blue
   }
+  
+  return pixs;
 }
 
